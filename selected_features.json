@@ -1,0 +1,1 @@
+{"features": ["rst_flag_counts", "packet_IAT_total", "bwd_payload_bytes_variance", "bwd_packets_rate", "min_header_bytes", "bwd_packets_IAT_min", "fwd_ack_flag_counts", "payload_bytes_std", "mean_header_bytes", "dst_port"]}
