@@ -41,7 +41,7 @@ def compute_features(flow):
 # Function to capture traffic and process flows
 def capture_traffic():
     # Initialize NFStreamer to capture traffic from the loopback interface
-    streamer = NFStreamer(source="lo", statistical_analysis=True)
+    streamer = NFStreamer(source="lo", statistical_analysis=True, bpf_filter="tcp port 5000")
     for flow in streamer:
         features = compute_features(flow)
         asyncio.run(send_to_websocket(features))
