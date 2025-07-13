@@ -1,0 +1,6 @@
+{
+  "supabase_url": "https://weuyfkdrvrrqbuyadswd.supabase.co",
+  "supabase_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndldXlma2RydnJycWJ1eWFkc3dkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0Nzk0NDYsImV4cCI6MjA2NTA1NTQ0Nn0.FvvluOEUDohvBhWy8lhAi2DmT3OJG7fOc8x6e68tu3o",
+  "websocket_port": 8765,
+  "network_interface": "lo"
+}

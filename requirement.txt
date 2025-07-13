@@ -1,0 +1,10 @@
+nfstream
+websockets
+supabase
+joblib
+numpy
+xgboost
+xanfis
+torch
+scikit-learn
+pandas
