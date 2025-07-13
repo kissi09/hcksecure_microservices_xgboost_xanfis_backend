@@ -1,4 +1,3 @@
-websockets
 nfstream
 websockets
 supabase
@@ -7,5 +6,6 @@ numpy
 xgboost
 xanfis
 torch
+requests
 scikit-learn
 pandas
