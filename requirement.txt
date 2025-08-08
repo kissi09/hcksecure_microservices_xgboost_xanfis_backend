@@ -1,4 +1,5 @@
 nfstream
+flask
 websockets
 supabase
 joblib
