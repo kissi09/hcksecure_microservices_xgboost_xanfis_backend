@@ -1,0 +1,2 @@
+Requirement already satisfied: cffi in /home/codespace/.local/lib/python3.12/site-packages (1.17.1)
+Requirement already satisfied: pycparser in /home/codespace/.local/lib/python3.12/site-packages (from cffi) (2.22)

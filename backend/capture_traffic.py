@@ -52,8 +52,7 @@ def capture_traffic():
     try:
         # Initialize NFStreamer to capture traffic
         streamer = NFStreamer(
-            source="\\Device\\NPF_{E63C9493-7134-4236-867B-0056329F1B86}",
-            statistical_analysis=True
+            source="eth0"
         )
 
         for flow in streamer:
