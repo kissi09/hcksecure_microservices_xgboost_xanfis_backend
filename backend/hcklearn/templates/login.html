@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Sign In{% endblock %}
+
+{% block body %}
+<div class="login-container">
+  <div class="login-card">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
+    <h1>hck‑elearn</h1>
+    <p class="subtitle">Student Information Manager</p>
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+    <form method="post">
+      <label>Student ID
+        <input type="text" name="student_id" placeholder="Enter your student ID" required>
+      </label>
+      <label>Password
+        <div class="password-field">
+          <input type="password" name="password" placeholder="Enter your password" required>
+          <button type="button" class="toggle-visibility">👁</button>
+        </div>
+      </label>
+      <div class="links">
+        <a href="#" class="btn-ghost">Forget Me</a>
+        <a href="#" class="link-text">Forgot Password?</a>
+      </div>
+      <button class="btn-primary">Sign In</button>
+    </form>
+  </div>
+</div>
+<script>
+  document.querySelector('.toggle-visibility')
+    .addEventListener('click', e => {
+      const inp = e.target.previousElementSibling;
+      inp.type = inp.type === 'password' ? 'text':'password';
+    });
+</script>
+{% endblock %}

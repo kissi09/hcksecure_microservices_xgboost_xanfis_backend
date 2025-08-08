@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+      <span>hck-elearn<br></span>
+    </div>
+    <nav>
+      <a href="{{ url_for('dashboard') }}" class="nav-item active">Dashboard</a>
+      <a href="#" class="nav-item">Registration</a>
+      <a href="#" class="nav-item">Check Result</a>
+    </nav>
+      <a href="{{ url_for('logout') }}" class="nav-item logout">Logout</a>
+  </aside>
+
+  <main class="main-content">
+    <header>
+      <h2>Welcome, {{ student_name }}</h2>
+    </header>
+    <section class="cards">
+      <a href="#" class="card">
+        <div class="icon">📋</div>
+        <h3>Registration</h3>
+      </a>
+      <a href="#" class="card">
+        <div class="icon">✅</div>
+        <h3>Check Result</h3>
+      </a>
+    </section>
+  </main>
+</div>
+{% endblock %}

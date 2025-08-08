@@ -1,0 +1,75 @@
+/* Reset & base */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: #f4f7fa; color: #333; }
+
+/* LOGIN */
+.login-container {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 20px;
+}
+.login-card {
+  background: #fff; padding: 40px; border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05); width: 100%; max-width: 360px;
+  text-align: center;
+}
+.login-card .logo { max-width: 80px; margin-bottom: 20px; }
+.login-card h1 { color: #009688; margin-bottom: 5px; }
+.login-card .subtitle { color: #666; margin-bottom: 25px; }
+.login-card label {
+  display: block; text-align: left; margin-bottom: 15px;
+  font-size: 0.9rem; color: #009688;
+}
+.login-card input {
+  width: 100%; padding: 10px; border: 1px solid #b2dfdb;
+  border-radius: 5px; margin-top: 5px;
+}
+.password-field { position: relative; }
+.password-field .toggle-visibility {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+}
+.links { display: flex; justify-content: space-between; margin-bottom: 20px; }
+.btn-ghost {
+  border: 1px solid #009688; padding: 6px 12px; border-radius: 4px;
+  background: transparent; color: #009688; text-decoration: none;
+}
+.link-text { color: #009688; text-decoration: none; font-size: 0.9rem; }
+.btn-primary {
+  background: #009688; color: #fff; padding: 12px; width: 100%;
+  border: none; border-radius: 5px; font-size: 1rem; cursor: pointer;
+}
+.error { color: #d32f2f; margin-bottom: 15px; }
+
+/* DASHBOARD LAYOUT */
+.app-shell { display: flex; min-height: 100vh; }
+.sidebar {
+  background: #fff; width: 260px; border-right: 1px solid #e0e0e0;
+  padding: 30px 20px; display: flex; flex-direction: column;
+}
+.brand { text-align: center; margin-bottom: 40px; }
+.brand img { width: 40px; }
+.brand span { display: block; font-weight: bold; margin-top: 10px; font-size: 0.95rem; }
+nav { flex-grow: 1; }
+.nav-item {
+  display: block; padding: 12px 15px; color: #444; text-decoration: none;
+  border-radius: 4px; margin-bottom: 8px;
+}
+.nav-item.active,
+.nav-item:hover { background: #e0f2f1; color: #00796b; }
+.logout { margin-top: auto; color: #d32f2f; }
+
+.main-content { flex-grow: 1; padding: 30px; }
+.main-content header h2 { margin-bottom: 25px; color: #333; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 20px; }
+.card {
+  background: #fff; padding: 25px; text-align: center;
+  border-radius: 8px; text-decoration: none; color: #00796b;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+.card .icon { font-size: 2.5rem; margin-bottom: 15px; }
+.card h3 { font-size: 1.1rem; }
