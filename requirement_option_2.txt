@@ -19,3 +19,5 @@ supabase==1.0.3
 nfstream==6.5.3
 matplotlib==3.7.3
 seaborn==0.12.2
+google-cloud-storage
+lightgbm
