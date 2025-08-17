@@ -1,68 +1,63 @@
+# capture_replay.py (batch mode)
+import os
 import json
+import time
 import asyncio
 import websockets
-from nfstream import NFStreamer
-import numpy as np
+import logging
+import pandas as pd
 
-# Load selected features from the JSON file
-with open('model_files/selected_features.json', 'r') as f:
-    selected_features = json.load(f)['features']
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("csv_replayer")
 
-# Function to send features to WebSocket server
-async def send_to_websocket(features):
-    uri = "ws://localhost:8765"
-    async with websockets.connect(uri) as websocket:
-        await websocket.send(json.dumps(features))
-        print(f"Sent features: {features}")
+# -----------------------------
+# Load selected features list
+# -----------------------------
+BASE_DIR = os.path.dirname(__file__)  # folder where capture_replay.py is located
+MODEL_DIR = os.path.join(BASE_DIR, "..", "model_files")
 
-# Function to compute features from a flow
-def compute_features(flow):
-    features = {}
+with open(os.path.join(MODEL_DIR, "selected_features.json"), "r") as f:
+    sel = json.load(f)
+SELECTED_FEATURES = sel["features"] if isinstance(sel, dict) and "features" in sel else sel
 
-    features['rst_flag_counts'] = getattr(flow, 'rst_count', 0)
-    features['packet_IAT_total'] = getattr(flow, 'flow_duration', 0)
-    features['bwd_payload_bytes_variance'] = getattr(flow, 'dst2src_stddev_ps', 0) ** 2
-    features['bwd_packets_rate'] = (getattr(flow, 'dst2src_packets', 0) /
-                                    (getattr(flow, 'flow_duration', 1) / 1000))
-    features['min_header_bytes'] = min(
-        getattr(flow, 'src2dst_min_ip_size', 0),
-        getattr(flow, 'dst2src_min_ip_size', 0)
-    )
-    features['bwd_packets_IAT_min'] = getattr(flow, 'dst2src_min_iat', 0)
-    features['fwd_ack_flag_counts'] = getattr(flow, 'ack_count', 0)
-    features['payload_bytes_std'] = np.mean([
-        getattr(flow, 'src2dst_stddev_ps', 0),
-        getattr(flow, 'dst2src_stddev_ps', 0)
-    ])
-    features['mean_header_bytes'] = 20  # Placeholder
-    features['dst_port'] = getattr(flow, 'destination_port', 0)
-
-    
-    # Ensure all selected features are included, even if not computed
-    for feat in selected_features:
-        if feat not in features:
-            features[feat] = 0  # Default value for uncomputed features
-    
-    return features
-
-# Function to capture traffic and process flows
-def capture_traffic():
-    print("[+] Starting traffic capture...")
-
+# -----------------------------
+# WebSocket sender
+# -----------------------------
+async def send_to_websocket(batch_records):
+    uri = "ws://localhost:8765"  # must match web_socket.py
     try:
-        # Initialize NFStreamer to capture traffic
-        streamer = NFStreamer(
-            source="eth0"
-        )
-
-        for flow in streamer:
-            features = compute_features(flow)
-            print(f"[>] Flow captured: {features}")  # DEBUG: Show the computed features
-            asyncio.run(send_to_websocket(features))
-
+        async with websockets.connect(uri, max_size=2**25) as websocket:  # allow big payloads
+            await websocket.send(json.dumps(batch_records))
+            logger.info(f"Sent batch of {len(batch_records)} rows")
     except Exception as e:
-        print(f"[!] Error during capture: {e}")
+        logger.error(f"WebSocket send failed: {e}")
 
-# Main execution
+# -----------------------------
+# Replay CSVs as batches
+# -----------------------------
+def replay_csvs(dataset_dir):
+    files = [f for f in os.listdir(dataset_dir) if f.endswith(".csv")]
+    files.sort()  # ensure replay order
+
+    for csv_file in files:
+        path = os.path.join(dataset_dir, csv_file)
+        logger.info(f"[+] Replaying file: {path}")
+
+        try:
+            df = pd.read_csv(path)
+        except Exception as e:
+            logger.error(f"Failed to read {path}: {e}")
+            continue
+
+        # Convert dataframe into list of dicts (rows with only selected features)
+        batch = df[SELECTED_FEATURES].fillna(0).astype(float).to_dict(orient="records")
+
+        # Send entire batch
+        asyncio.run(send_to_websocket(batch))
+
+        logger.info(f"[✓] Finished {csv_file}, sleeping 20s before next...")
+        time.sleep(20)
+
 if __name__ == "__main__":
-    capture_traffic()
+    dataset_dir = os.path.join(BASE_DIR, "BCCC-CICIDS")
+    replay_csvs(dataset_dir)
